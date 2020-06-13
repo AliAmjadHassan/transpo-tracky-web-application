@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {connect} from 'react-redux';
 import {searchBus} from '../actions';
 import {bindActionCreators} from 'redux';
-import { func } from "prop-types";
 class SearchBus extends Component {
   
     constructor(props) {

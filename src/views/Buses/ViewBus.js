@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
 import { Link } from "react-router-dom";
-import { ClickedBusValueSetter } from "./UpdateBus";
-import SearchBus from "../../containers/SearchBus";
 import {
   Card,
   CardBody,
@@ -16,19 +14,13 @@ import {
   Table,
   Button,
 } from "reactstrap";
-import AddBus from "./AddBus";
+
 
 class ViewBus extends Component {
   componentWillMount() {
-    this.props.BusList();
+    this.props.busList();
   }
 
-
-
-  handleEdit = (bus, id) => {
-    // console.log("Edit id", id, "data", bus);
-    ClickedBusValueSetter(bus);
-  };
 
   render() {
     console.log("Props from ViewBus Component:", this.props);
@@ -39,7 +31,6 @@ class ViewBus extends Component {
             <Card>
               <CardHeader>
                 <i className=""></i> <strong>Buses</strong>
-                <SearchBus />
               </CardHeader>
               <CardBody>
                 <Table hover bordered striped responsive size="sm">
@@ -60,14 +51,14 @@ class ViewBus extends Component {
                             <td>{bus.capacity}</td>
                             <td>
                               <Link
-                                to={"/update-bus"}
+                                to={`/update-bus/${bus.id}`}
                                 style={{ textDecoration: "none" }}
                               >
                                 <Col col="3" md="12">
                                   <Button
                                     block
                                     color="ghost-success"
-                                    onClick={() => this.handleEdit(bus, bus.id)}
+                                    
                                   >
                                     Edit
                                   </Button>
@@ -79,6 +70,7 @@ class ViewBus extends Component {
                       : null}
                   </tbody>
                 </Table>
+                      
                 <nav>
                   <Pagination>
                     <PaginationItem>
@@ -107,7 +99,9 @@ class ViewBus extends Component {
                 </nav>
               </CardBody>
             </Card>
+            
           </Col>
+         
         </Row>
       </div>
     );
@@ -115,6 +109,7 @@ class ViewBus extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log("State of View Component",state)
   return {
     Buses: state.Buses,
   };

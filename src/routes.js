@@ -59,7 +59,7 @@ const routes = [
   { path: '/edit-routes', name: 'ActiveRoutes', component: UpdateRoutes},
   { path: '/track-routes', name: 'ActiveRoutes', component: TrackRoutes},
   { path: '/add-bus', name: 'AddBus', component: AddBus},
-  { path: '/update-bus', name: 'UpdateBus', component: UpdateBus},
+  { path: '/update-bus/:id', name: 'UpdateBus', component: UpdateBus},
   { path: '/view-bus', name: 'ViewBus', component: ViewBus},
   { path: '/add-driver', name: 'AddDriver', component: AddDriver},
   { path: '/view-driver', name: 'ViewDriver', component: VieDriver},

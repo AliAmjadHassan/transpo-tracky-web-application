@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import { editbus } from "../../actions/index";
-import * as actions from "../../actions";
+import { clickedBusFunction } from "../../actions/";
+import { bindActionCreators } from "redux";
 
 import {
   Button,
@@ -60,9 +60,13 @@ class UpdateBus extends Component {
       </FormGroup>
     );
   }
-
+  //WARNING! To be deprecated in React v17. Use componentDidMount instead.
+  componentDidMount() {
+    this.props.clickedBusFunction(this.props.match.params.id);
+  }
   render() {
-    console.log("Props of Update Component", this.props);
+    const clickedBusVariable = this.props.Buses;
+    console.log("Props of Update Component", clickedBusVariable);
     return (
       <div className="AddBus animated fadeIn">
         <Row>
@@ -152,11 +156,17 @@ function validate(Values) {
   }
   return errors;
 }
-export function ClickedBusValueSetter(bus) {
-  const {clickedbus} = bus
-  return { BustoUpdate: clickedbus} 
+
+function mapStateToProps(state) {
+  return {
+    Buses: state.Buses,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ clickedBusFunction }, dispatch);
 }
 export default reduxForm({
   validate,
   form: "update-bus-form",
-})(connect(ClickedBusValueSetter, editbus)(UpdateBus));
+})(connect(mapStateToProps, mapDispatchToProps)(UpdateBus));

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import AddBus from "../views/Buses/AddBus";
 const URL = `http://localHost:4000`;
-const id = 1;
 
-export function BusList() {
+export function busList() {
   const request = fetch(`${URL}/buses`, { method: "GET" }).then((response) =>
     response.json()
   );
@@ -27,24 +26,22 @@ export function addNewBus(values, cb) {
   };
 }
 
-export function searchBus(keywords) {
-  const request = fetch(`${URL}/buses?q=${keywords}`, { method: "GET" });
-  return {
-    type: "SEARCH_BUS",
-    payload: request,
-  };
-}
+// export function searchBus(id) {
+//   const request = fetch(`${URL}/buses/${id}`, {
+//     method: "GET",
+//   }).then((response) => response.json());
+//   return {
+//     type: "SEARCH_BUS",
+//     payload: request,
+//   };
+// }
 
-export function editbus(values) {
-  // const request =  fetch(`${URL}/buses/:1`, {
-  //   method: "PUT",
-  //   body: JSON.stringify(values),
-  // })
-  //   .then
-  //   console.log('Bus was updated');
-
+export function clickedBusFunction(id) {
+  const request = fetch(`${URL}/buses/${id}`, {
+    method: "GET",
+  }).then((response) => response.json());
   return {
-    type: "EDIT_BUS",
-    payload: "everything went fine",
-  };
+    type: "CLICKED_BUS",
+    payload: request
+  }
 }
