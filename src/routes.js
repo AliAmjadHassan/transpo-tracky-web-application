@@ -26,6 +26,7 @@ const Charts = React.lazy(() => import('./views/Charts'));
 const Dashboard = React.lazy(() => import('./views/Dashboard'));
 const BusRoutes = React.lazy(()=> import('./views/BusRoutes/BusRoutes'));
 const AddBus = React.lazy(()=> import('./views/Buses/AddBus'));
+const UpdateBus = React.lazy(()=> import('./views/Buses/UpdateBus'));
 const ViewBus = React.lazy(()=> import('./views/Buses/ViewBus'));
 const ViewRoutes = React.lazy(()=> import('./views/BusRoutes/ViewRoutes'));
 const ActiveRoutes = React.lazy(()=> import('./views/BusRoutes/ActiveRoutes'));
@@ -58,6 +59,7 @@ const routes = [
   { path: '/edit-routes', name: 'ActiveRoutes', component: UpdateRoutes},
   { path: '/track-routes', name: 'ActiveRoutes', component: TrackRoutes},
   { path: '/add-bus', name: 'AddBus', component: AddBus},
+  { path: '/update-bus', name: 'UpdateBus', component: UpdateBus},
   { path: '/view-bus', name: 'ViewBus', component: ViewBus},
   { path: '/add-driver', name: 'AddDriver', component: AddDriver},
   { path: '/view-driver', name: 'ViewDriver', component: VieDriver},

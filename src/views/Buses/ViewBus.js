@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { AppSwitch } from "@coreui/react";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
-import {Link } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import { ClickedBusValueSetter } from "./UpdateBus";
+import SearchBus from "../../containers/SearchBus";
 import {
-  Badge,
   Card,
   CardBody,
   CardHeader,
@@ -24,29 +23,23 @@ class ViewBus extends Component {
     this.props.BusList();
   }
 
-  // renderList = (Buses) => {
-  //   if (Buses){
-  //     return Buses.map((Bus) => {
-  //       return <div>{Bus.plate}</div>;
-  //     });
-  //   }
-  // };
-  // abc(){console.log(state)}
+
+
   handleEdit = (bus, id) => {
-    console.log("Edit id", id, "data", bus);
-    // <AppBus busValue={bus}/>
-  // return <Link name="ideas" path="/add-bus" handler={bus} />
+    // console.log("Edit id", id, "data", bus);
+    ClickedBusValueSetter(bus);
   };
+
   render() {
-    console.log("Buses", this.props.Buses.data);
+    console.log("Props from ViewBus Component:", this.props);
     return (
       <div className="animated fadeIn">
-        {/* {this.renObjData(this.props.Buses)} */}
         <Row>
           <Col xs="12" md="12">
             <Card>
               <CardHeader>
-                <i className=""></i> <strong>Routes</strong>
+                <i className=""></i> <strong>Buses</strong>
+                <SearchBus />
               </CardHeader>
               <CardBody>
                 <Table hover bordered striped responsive size="sm">
@@ -65,12 +58,11 @@ class ViewBus extends Component {
                             <td>{bus.plate}</td>
                             <td>{bus.manufacturerName}</td>
                             <td>{bus.capacity}</td>
-
                             <td>
                               <Link
-                                to={"/add-bus"}
+                                to={"/update-bus"}
                                 style={{ textDecoration: "none" }}
-                              > 
+                              >
                                 <Col col="3" md="12">
                                   <Button
                                     block
@@ -84,32 +76,7 @@ class ViewBus extends Component {
                             </td>
                           </tr>
                         ))
-                      : ""}
-
-                    <tr>
-                      <td>LEP-1592</td>
-                      <td>Milllat</td>
-                      <td>60</td>
-                      <td>
-                        <Col col="3" md="12">
-                          <Button block color="ghost-success">
-                            Edit
-                          </Button>
-                        </Col>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>ALI-1234</td>
-                      <td>Audi</td>
-                      <td>35</td>
-                      <td>
-                        <Col col="3" md="12">
-                          <Button block color="ghost-success">
-                            Edit
-                          </Button>
-                        </Col>
-                      </td>
-                    </tr>
+                      : null}
                   </tbody>
                 </Table>
                 <nav>
@@ -148,12 +115,9 @@ class ViewBus extends Component {
 }
 
 function mapStateToProps(state) {
-  // console.log(state.Buses);
   return {
     Buses: state.Buses,
   };
 }
-
-
 
 export default connect(mapStateToProps, actions)(ViewBus);

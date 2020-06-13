@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import { addNewBus } from "../../actions/index";
-import ClickedBusData from './ViewBus.js';
+import { editbus } from "../../actions/index";
+import * as actions from "../../actions";
 
 import {
   Button,
@@ -19,7 +18,7 @@ import {
   Row,
 } from "reactstrap";
 
-class AddBus extends Component {
+class UpdateBus extends Component {
   textInputHandler(field) {
     const className = `form-input ${
       field.meta.touched && field.meta.error ? "has-error" : ""
@@ -61,16 +60,9 @@ class AddBus extends Component {
       </FormGroup>
     );
   }
-  onSubmit(Values) {
-    this.props.addNewBus(Values,()=>{
-      this.props.history.push('/view-bus')
-    });
-    
-  }
 
   render() {
-    
-    // console.log("BusClickedData", this.props.bus)
+    console.log("Props of Update Component", this.props);
     return (
       <div className="AddBus animated fadeIn">
         <Row>
@@ -80,12 +72,7 @@ class AddBus extends Component {
                 <strong>Add New Bus</strong>
               </CardHeader>
               <CardBody>
-                <form
-                  onSubmit={this.props.handleSubmit((event) =>
-                    this.onSubmit(event)
-                  )}
-                  className="form-horizontal"
-                >
+                <form className="form-horizontal">
                   <Field
                     myLabel="Bus Plate Number"
                     helpingText="E.g LEZ 1234"
@@ -124,14 +111,14 @@ class AddBus extends Component {
               </CardBody>
               <CardFooter>
                 <Button
-                  onClick={this.props.handleSubmit((event) =>
-                    this.onSubmit(event)
-                  )}
-                  type="submit"
+                  //   onClick={this.props.handleSubmit((event) =>
+                  //     this.onSubmit(event)
+                  //   )}
+
                   size="sm"
                   color="primary"
                 >
-                  Submit
+                  Update
                 </Button>
               </CardFooter>
             </Card>
@@ -163,19 +150,13 @@ function validate(Values) {
   if (!Values.capacity || Values.capacity < 0) {
     errors.capacity = "Enter a valid Number";
   }
-
-  // console.log(Values);
-
   return errors;
 }
-
-function mapStateToProps(state){
-  return{
-    success: state.data
-  }
+export function ClickedBusValueSetter(bus) {
+  const {clickedbus} = bus
+  return { BustoUpdate: clickedbus} 
 }
-
 export default reduxForm({
   validate,
-  form: "add-bus-form",
-})(connect(mapStateToProps, { addNewBus })(AddBus));
+  form: "update-bus-form",
+})(connect(ClickedBusValueSetter, editbus)(UpdateBus));
