@@ -1,5 +1,3 @@
-import React, { Component } from "react";
-import AddBus from "../views/Buses/AddBus";
 const URL = `http://localHost:4000`;
 
 export function busList() {
@@ -13,6 +11,7 @@ export function busList() {
 }
 
 export function addNewBus(values, cb) {
+  // console.log("Values from AddBus",values)
   const request = fetch(`${URL}/buses`, {
     method: "POST",
     headers: {
@@ -23,6 +22,21 @@ export function addNewBus(values, cb) {
   return {
     type: "ADD_BUS",
     payload: "everything went fine",
+  };
+}
+
+export function updateBus(values, id, cb) {
+  // console.log("Values from Index",values,id,"URL From index",`${URL}/buses/${id}`)
+  const request = fetch(`${URL}/buses/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(values),
+  }).then(() => cb());
+  return {
+    type: "UPDATE_BUS",
+    payload: "Bus was Updated",
   };
 }
 
@@ -42,6 +56,26 @@ export function clickedBusFunction(id) {
   }).then((response) => response.json());
   return {
     type: "CLICKED_BUS",
-    payload: request
-  }
+    payload: request,
+  };
+}
+
+export function deleteBus(id, cb) {
+  const request = fetch(`${URL}/buses/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then(() => cb());
+  return {
+    type: "DELETE_BUS",
+    payload: "Bus was deleted",
+  };
+}
+
+export function clearClickedBus() {
+  return {
+    type: "CLEAR_CLICKED_BUS",
+    payload: {},
+  };
 }

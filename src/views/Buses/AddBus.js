@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import { addNewBus } from "../../actions/index";
-import ClickedBusData from './ViewBus.js';
+import { addNewBus } from "../../actions/busActions";
 
 import {
   Button,
@@ -62,15 +61,12 @@ class AddBus extends Component {
     );
   }
   onSubmit(Values) {
-    this.props.addNewBus(Values,()=>{
-      this.props.history.push('/view-bus')
+    this.props.addNewBus(Values, () => {
+      this.props.history.push("/view-bus");
     });
-    
   }
 
   render() {
-    
-    // console.log("BusClickedData", this.props.bus)
     return (
       <div className="AddBus animated fadeIn">
         <Row>
@@ -164,15 +160,15 @@ function validate(Values) {
     errors.capacity = "Enter a valid Number";
   }
 
-  // console.log(Values);
+  console.log(Values);
 
   return errors;
 }
 
-function mapStateToProps(state){
-  return{
-    success: state.data
-  }
+function mapStateToProps(state) {
+  return {
+    success: state.data,
+  };
 }
 
 export default reduxForm({

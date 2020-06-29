@@ -32,6 +32,7 @@
     "react-chartjs-2": "^2.7.6",
     "react-dom": "^16.8.6",
     "react-iframe": "^1.8.0",
+    "react-loading-screen": "0.0.17",
     "react-redux": "^7.2.0",
     "react-router-config": "^5.0.1",
     "react-router-dom": "^5.0.1",
