@@ -3,17 +3,18 @@ export default {
     {
       name: "Dashboard",
       url: "/dashboard",
-      icon: "icon-dashboard"
+      icon: "icon-dashboard",
     },
-    // {
-    //   title: true,
-    //   name: 'Theme',
-    //   wrapper: {            // optional wrapper object
-    //     element: '',        // required valid HTML5 element tag
-    //     attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
-    //   },
-    //   class: ''             // optional class names space delimited list for title item ex: "text-center"
-    // },
+    {
+      title: true,
+      // name: 'Theme',
+      wrapper: {
+        // optional wrapper object
+        element: "", // required valid HTML5 element tag
+        attributes: {}, // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+      },
+      class: "", // optional class names space delimited list for title item ex: "text-center"
+    },
     // {
     //   name: 'Colors',
     //   url: '/theme/colors',
@@ -33,19 +34,35 @@ export default {
     //   },
     // },
     {
+      name: "Buses",
+      icon: "icon-speedometer",
+      children: [
+        {
+          name: "Add",
+          url: "/add-bus",
+          icon: "icon-speedometer",
+        },
+        {
+          name: "View",
+          url: "/view-bus",
+          icon: "icon-speedometer",
+        },
+      ],
+    },
+    {
       name: "Routes",
       icon: "icon-graph",
       children: [
         {
           name: "Add",
           url: "/bus-routes",
-          icon: "icon-graph"
+          icon: "icon-graph",
         },
         {
           name: "View",
           url: "/view-routes",
-          icon: "icon-graph"
-        }
+          icon: "icon-graph",
+        },
         // {
         //   name: 'Update',
         //   url: '/base/carousels',
@@ -116,33 +133,18 @@ export default {
         //       url: '/base/tooltips',
         //       icon: 'icon-puzzle',
         //     },
-      ]
+      ],
     },
-    {
-      name: "Buses",
-      icon: "icon-speedometer",
-      children: [
-        {
-          name: "Add",
-          url: "/add-bus",
-          icon: "icon-speedometer"
-        },
-        {
-          name: "View",
-          url: "/view-bus",
-          icon: "icon-speedometer"
-        }
-      ]
-    },
+
     {
       name: "Employee",
-      url: "/",
+      url: "/employes",
       icon: "icon-people",
       children: [
         {
           name: "Add",
           url: "/add-driver",
-          icon: "icon-people"
+          icon: "icon-people",
           // badge: {
           //   variant: 'info',
           //   text: 'NEW',
@@ -151,9 +153,9 @@ export default {
         {
           name: "View",
           url: "/view-driver",
-          icon: "icon-people"
-        }
-      ]
+          icon: "icon-people",
+        },
+      ],
     },
 
     {
@@ -163,7 +165,7 @@ export default {
         {
           name: "Add Passengers",
           url: "/add-paid-students",
-          icon: "icon-people"
+          icon: "icon-people",
           // badge: {
           //   variant: 'info',
           //   text: 'NEW',
@@ -172,15 +174,15 @@ export default {
         {
           name: "View",
           url: "/view-paid-students",
-          icon: "icon-people"
-        }
-      ]
+          icon: "icon-people",
+        },
+      ],
     },
 
     {
       name: "Previous Trips",
       url: "/",
-      icon: "icon-pie-chart"
+      icon: "icon-pie-chart",
     },
     // {
     //   name: 'Notifications',
@@ -214,8 +216,8 @@ export default {
     //   },
     // },
     {
-      divider: true
-    }
+      divider: true,
+    },
     // {
     //   title: true,
     //   name: 'Extras',
@@ -253,5 +255,5 @@ export default {
     //   icon: 'icon-ban',
     //   attributes: { disabled: true },
     // },
-  ]
+  ],
 };

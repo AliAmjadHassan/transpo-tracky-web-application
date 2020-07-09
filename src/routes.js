@@ -24,7 +24,7 @@ const ButtonGroups = React.lazy(() => import('./views/Buttons/ButtonGroups'));
 const Buttons = React.lazy(() => import('./views/Buttons/Buttons'));
 const Charts = React.lazy(() => import('./views/Charts'));
 const Dashboard = React.lazy(() => import('./views/Dashboard'));
-const BusRoutes = React.lazy(()=> import('./views/BusRoutes/BusRoutes'));
+const addNewRoutes = React.lazy(()=> import('./views/BusRoutes/addNewRoutes'));
 const AddBus = React.lazy(()=> import('./views/Buses/AddBus'));
 const UpdateBus = React.lazy(()=> import('./views/Buses/UpdateBus'));
 const ViewBus = React.lazy(()=> import('./views/Buses/ViewBus'));
@@ -53,7 +53,7 @@ const User = React.lazy(() => import('./views/Users/User'));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  { path: '/bus-routes', name: 'BusRoutes', component: BusRoutes},
+  { path: '/bus-routes', name: 'addNewRoutes', component: addNewRoutes},
   { path: '/view-routes', name: 'ViewRoutes', component: ViewRoutes},
   { path: '/active-routes', name: 'ActiveRoutes', component: ActiveRoutes},
   { path: '/edit-routes', name: 'ActiveRoutes', component: UpdateRoutes},

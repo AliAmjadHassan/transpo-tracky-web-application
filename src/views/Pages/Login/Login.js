@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import logo from "../Login/logo.png";
 import {
+  Alert,
   Button,
   Card,
   CardBody,
@@ -13,20 +15,37 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Row
+  Row,
 } from "reactstrap";
-class Login extends Component {     
+
+let name = "";
+let pass = "";
+class Login extends Component {
+  componentWillUnmount() {
+    name = "";
+    pass = "";
+  }
+  state = {
+    username: "admin",
+    password: "admin",
+  };
+
+  loginhandler() {
+    if (this.state.username == name && this.state.password == pass) {
+      this.props.history.push("/dashboard");
+    } else return <Alert color="danger">Enter Correct Details</Alert>;
+  }
   render() {
+    console.log(this.props);
     return (
       <div className="app flex-row align-items-center">
-        <Container>          
+        <Container>
           <Row className="justify-content-center">
-         
             <Col md="8">
               <CardGroup>
                 <Card className="p-4">
                   <CardBody>
-                  <img height="100%" width="100%" src={logo} />
+                    <img height="100%" width="100%" src={logo} />
                     <Form>
                       <h1>Login</h1>
                       <p className="text-muted">Sign In to your account</p>
@@ -40,6 +59,7 @@ class Login extends Component {
                           type="text"
                           placeholder="Username"
                           autoComplete="username"
+                          onChange={(event) => (name = event.target.value)}
                         />
                       </InputGroup>
                       <InputGroup className="mb-4">
@@ -52,22 +72,27 @@ class Login extends Component {
                           type="password"
                           placeholder="Password"
                           autoComplete="current-password"
+                          onChange={(event) => (pass = event.target.value)}
                         />
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                        <Link
+                          {/* <Link
                             to={"/dashboard"}
                             style={{ textDecoration: "none" }}
+                          > */}
+                          <Button
+                            onClick={() => {
+                              this.loginhandler();
+                            }}
+                            color="success"
+                            className="px-4"
                           >
-                             <Button color="success" className="px-4">
                             Login
                           </Button>
-                          </Link>
-                         
+                          {/* </Link> */}
                         </Col>
                         <Col xs="6" className="text-right">
-                          
                           <Button color="link" className="px-0">
                             Forgot password?
                           </Button>
@@ -110,4 +135,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);
