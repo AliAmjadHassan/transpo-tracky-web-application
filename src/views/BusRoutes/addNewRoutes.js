@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { getactivesession } from "../../actions/sessionActions";
 import LoadingScreen from "react-loading-screen";
 import logo from "../../assets/img/brand/logop.svg";
+import Iframe from "react-iframe";
 
 import {
   Button,
@@ -253,6 +254,33 @@ const renderField = ({
     </Col>
   </FormGroup>
 );
+const renderStopField = ({
+  input,
+  label,
+  placeholder,
+  type,
+  className,
+  helpingText,
+  meta: { touched, error },
+}) => (
+  <FormGroup row className={className}>
+    <Col sm="6">
+      <Label>{label}</Label>
+
+      <Input {...input} type={type} placeholder={placeholder} />
+      <FormText color="muted">{helpingText}</FormText>
+    </Col>
+    {touched && error && (
+      <span
+        style={{
+          color: "red",
+        }}
+      >
+        {error}
+      </span>
+    )}
+  </FormGroup>
+);
 
 const dropDownHandler = ({
   label,
@@ -287,6 +315,7 @@ const renderStops = ({ fields, meta: { error, submitFailed } }) => (
         color="success"
         type="button"
         style={{
+          display: "inline-block",
           float: "right",
         }}
         onClick={() => fields.push({})}
@@ -297,31 +326,58 @@ const renderStops = ({ fields, meta: { error, submitFailed } }) => (
     </ListGroupItem>
     {fields.map((stop, index) => (
       <ListGroupItem key={index}>
-        <FormText>Stop No.{index + 1}</FormText>
-        <Field
-          name={`${stop}.name`}
-          type="text"
-          component={renderField}
-          label="Name"
-        />
-        <Field
-          name={`${stop}.timeToReach`}
-          type="time"
-          component={renderField}
-          label="Time To Reach"
-        />
-        <Field
-          name={`${stop}.latitude`}
-          type="text"
-          component={renderField}
-          label="Lattitude"
-        />
-        <Field
-          name={`${stop}.longitude`}
-          type="text"
-          component={renderField}
-          label="Longitude"
-        />
+        <h4
+          style={{
+            marginBottom: "20px",
+            color: "red",
+          }}
+        >
+          Stop No.{index + 1}
+        </h4>
+        <Row>
+          <Col sx="6" md="6" sm="12">
+            <Field
+              name={`${stop}.name`}
+              type="text"
+              component={renderStopField}
+              label="Name"
+            />
+          </Col>
+          <Col sx="6" md="6" sm="12">
+            <Field
+              name={`${stop}.timeToReach`}
+              type="time"
+              component={renderStopField}
+              label="Time To Reach"
+            />
+          </Col>
+          <Col sx="6" md="6" sm="12">
+            <Field
+              name={`${stop}.latitude`}
+              type="text"
+              component={renderStopField}
+              label="Lattitude"
+            />
+          </Col>
+          <Col sx="6" md="6" sm="12">
+            <Field
+              name={`${stop}.longitude`}
+              type="text"
+              component={renderStopField}
+              label="Longitude"
+            />
+          </Col>
+        </Row>
+        <Iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3405.413809808063!2d74.21044541447971!3d31.402723060085357!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3918ffd0bc7c5f71%3A0x879e9b82857bcd94!2sCOMSATS%20University%2C%20Lahore%20Campus!5e0!3m2!1sen!2s!4v1586779611960!5m2!1sen!2s"
+          width="100%"
+          height="400px"
+          frameborder="0"
+          style="border:0;"
+          allowfullscreen=""
+          aria-hidden="false"
+          tabindex="0"
+        ></Iframe>
         <Button
           type="button"
           title="Remove Stop"
@@ -329,6 +385,7 @@ const renderStops = ({ fields, meta: { error, submitFailed } }) => (
           color="danger"
           style={{
             float: "right",
+            marginTop:"20px"
           }}
           onClick={() => fields.remove(index)}
         >
@@ -413,7 +470,7 @@ const AddNewRoutes = (props) => {
                     name="session"
                     label="Session"
                     status1="Current Session"
-                    value1={JSON.stringify(sessionvalue)}
+                    value1={JSON.stringify(sessionvalue.session)}
                     status2="Next Session"
                     status3="Please Select"
                     component={dropDownHandler}

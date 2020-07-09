@@ -31,9 +31,9 @@ class Login extends Component {
   };
 
   loginhandler() {
-    if (this.state.username == name && this.state.password == pass) {
+    if (this.state.username === name && this.state.password === pass) {
       this.props.history.push("/dashboard");
-    } else return <Alert color="danger">Enter Correct Details</Alert>;
+    } else alert("User Id or Password is inCorrect")
   }
   render() {
     console.log(this.props);

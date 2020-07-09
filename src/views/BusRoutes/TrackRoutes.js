@@ -18,6 +18,14 @@ import {
 } from "reactstrap";
 
 class TrackRoutes extends Component {
+  componentDidMount() {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(function (position) {
+        console.log("Latitude is :", position.coords.latitude);
+        console.log("Longitude is :", position.coords.longitude);
+      });
+    }
+  }
   state = {};
   render() {
     return (
