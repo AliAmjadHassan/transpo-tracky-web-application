@@ -5,7 +5,8 @@ import { getactivesession } from "../../actions/sessionActions";
 import LoadingScreen from "react-loading-screen";
 import logo from "../../assets/img/brand/logop.svg";
 import Iframe from "react-iframe";
-
+import MyMapComponent from "./MapComponent";
+import { MapLocationReturn } from "./MapComponent";
 import {
   Button,
   Card,
@@ -225,6 +226,10 @@ import {
 //   validate,
 //   form: "add-new-route",
 // })(connect(mapStateToProps, { getactivesession })(addNewRoutes));
+let mapPosition = {
+  lat: 0,
+  lng: 0,
+};
 
 const renderField = ({
   input,
@@ -261,6 +266,7 @@ const renderStopField = ({
   type,
   className,
   helpingText,
+  value,
   meta: { touched, error },
 }) => (
   <FormGroup row className={className}>
@@ -307,7 +313,12 @@ const dropDownHandler = ({
   </FormGroup>
 );
 
-const renderStops = ({ fields, meta: { error, submitFailed } }) => (
+const renderStops = ({
+  mapLat,
+  mapLng,
+  fields,
+  meta: { error, submitFailed },
+}) => (
   <ListGroup>
     <ListGroupItem>
       <Button
@@ -357,6 +368,7 @@ const renderStops = ({ fields, meta: { error, submitFailed } }) => (
               type="text"
               component={renderStopField}
               label="Lattitude"
+              placeholder={mapLat}
             />
           </Col>
           <Col sx="6" md="6" sm="12">
@@ -365,19 +377,14 @@ const renderStops = ({ fields, meta: { error, submitFailed } }) => (
               type="text"
               component={renderStopField}
               label="Longitude"
+              placeholder={mapLng}
             />
           </Col>
+          <Col sm="12">
+            <MyMapComponent />
+          </Col>
         </Row>
-        <Iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3405.413809808063!2d74.21044541447971!3d31.402723060085357!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3918ffd0bc7c5f71%3A0x879e9b82857bcd94!2sCOMSATS%20University%2C%20Lahore%20Campus!5e0!3m2!1sen!2s!4v1586779611960!5m2!1sen!2s"
-          width="100%"
-          height="400px"
-          frameborder="0"
-          style="border:0;"
-          allowfullscreen=""
-          aria-hidden="false"
-          tabindex="0"
-        ></Iframe>
+
         <Button
           type="button"
           title="Remove Stop"
@@ -385,7 +392,7 @@ const renderStops = ({ fields, meta: { error, submitFailed } }) => (
           color="danger"
           style={{
             float: "right",
-            marginTop:"20px"
+            marginTop: "20px",
           }}
           onClick={() => fields.remove(index)}
         >
@@ -398,8 +405,9 @@ const renderStops = ({ fields, meta: { error, submitFailed } }) => (
 
 const AddNewRoutes = (props) => {
   const { handleSubmit, pristine, reset, submitting } = props;
-  console.log(props);
   useEffect(() => {
+    console.log("Add Route Props", props);
+
     props.getactivesession();
   }, []);
   if (props.activeSession == undefined) {
@@ -421,8 +429,21 @@ const AddNewRoutes = (props) => {
         id: props.activeSession.id,
       },
     };
-    console.log("Props of Add Route", props);
+
     console.log("Session Value", sessionvalue.session);
+    console.log("Sessio", props);
+    let lat = 0;
+    let lng = 0;
+    if (props.mapLocation == undefined) {
+      lat = 0;
+      lng = 0;
+    } else {
+      lat = props.mapLocation.mapPosition.lat;
+      lng = props.mapLocation.mapPosition.lng;
+      console.log("Lat",lat,"Lng",lng)
+    }
+   
+
     return (
       <div className="animated fadeIn">
         <Row>
@@ -476,7 +497,12 @@ const AddNewRoutes = (props) => {
                     component={dropDownHandler}
                     type="select"
                   ></Field>
-                  <FieldArray name="stopList" component={renderStops} />
+                  <FieldArray
+                    mapLat={lat}
+                    mapLng={lng}
+                    name="stopList"
+                    component={renderStops}
+                  />
                   <CardFooter>
                     <Button
                       type="submit"
@@ -536,16 +562,17 @@ function validate(Values) {
   //   errors.capacity = "Enter a valid Number";
   // }
 
-  console.log(Values);
+  // console.log(Values);
 
   return errors;
 }
 function mapStateToProps(state) {
-  console.log("State", state);
+  console.log("state of add route", state);
   if (state.Sessions.activeSession == undefined) return {};
   else {
     return {
       activeSession: state.Sessions.activeSession.data,
+      mapLocation: state.Routes.mapLocation,
     };
   }
 }

@@ -25,6 +25,7 @@ const Buttons = React.lazy(() => import('./views/Buttons/Buttons'));
 const Charts = React.lazy(() => import('./views/Charts'));
 const Dashboard = React.lazy(() => import('./views/Dashboard'));
 const addNewRoutes = React.lazy(()=> import('./views/BusRoutes/addNewRoutes'));
+const MapComponent = React.lazy(()=> import('./views/BusRoutes/MapComponent'));
 const AddBus = React.lazy(()=> import('./views/Buses/AddBus'));
 const UpdateBus = React.lazy(()=> import('./views/Buses/UpdateBus'));
 const ViewBus = React.lazy(()=> import('./views/Buses/ViewBus'));
@@ -55,6 +56,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/bus-routes', name: 'addNewRoutes', component: addNewRoutes},
   { path: '/view-routes', name: 'ViewRoutes', component: ViewRoutes},
+  { path: '/bus-routes/map', name: 'map', component: MapComponent},
   { path: '/active-routes', name: 'ActiveRoutes', component: ActiveRoutes},
   { path: '/edit-routes', name: 'ActiveRoutes', component: UpdateRoutes},
   { path: '/track-routes', name: 'ActiveRoutes', component: TrackRoutes},

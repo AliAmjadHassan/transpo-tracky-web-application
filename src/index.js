@@ -12,6 +12,8 @@ import { createStore, applyMiddleware } from "redux";
 import reducers from "../src/reducers/rootreducer";
 import middlewears from 'redux-promise';
 
+
+
 // const store = createStore(rootReducer);
 
 
