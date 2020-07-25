@@ -1,135 +1,150 @@
-import React, { Component, lazy } from "react";
-import Switches from "../Base/Switches/Switches";
-import { AppSwitch } from "@coreui/react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { viewRoutes } from "../../actions/routesActions";
 import { Link } from "react-router-dom";
+import logo from "../../assets/img/brand/logop.svg";
+import LoadingScreen from "react-loading-screen";
+
 import {
-  Badge,
   Card,
   CardBody,
   CardHeader,
   Col,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Row,
   Table,
-  Button,
-  NavLink,
+  Collapse,
+  Button
 } from "reactstrap";
 
 class ViewRoutes extends Component {
-  state = {};
+  componentWillMount() {
+    this.props.viewRoutes();
+  }
+
+  state = {
+    isOpen: false,
+  };
+
+  collapseHandler() {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  }
   render() {
-    return (
-      <div className="animated fadeIn">
-        <Row>
-          <Col xs="12" md="12">
-            <Card>
-              <CardHeader>
-                <i className=""></i> <strong>Routes</strong>
-              </CardHeader>
-              <CardBody>
-                <Table hover bordered striped responsive size="sm">
-                  <thead>
-                    <tr>
-                      <th>Route Number</th>
-                      <th>Route Name</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Muridke-Comsats</td>
-
-                      <td>
-                        <Col col="3" md="12">
-                          <Link
-                            to={"/edit-routes"}
-                            style={{ textDecoration: "none" }}
+    console.log("Props from View", this.props);
+    console.log("is open", this.state.isOpen);
+    if (this.props.Routes.data == undefined) {
+      return (
+        <LoadingScreen
+          loading={true}
+          bgColor="#659759"
+          spinnerColor="#344a32"
+          textColor="##e9d9a8"
+          logoSrc={logo}
+          text="A conveyance with convenience"
+        >
+          <div>Loading...</div>
+        </LoadingScreen>
+      );
+    } else {
+      return (
+        <div className="animated fadeIn">
+          <Row>
+            <Col xs="12" md="12">
+              <Card>
+                <CardHeader>
+                  <i className=""></i> <strong>Routes</strong>
+                </CardHeader>
+                <CardBody>
+                  <Table  bordered striped responsive size="lg">
+                    <thead>
+                      <tr>
+                        <th>Route Name</th>
+                        <th>
+                         
+                          <button
+                            onClick={() => {
+                              this.collapseHandler();
+                            }}
+                            style={{marginBottom:"10px", float: "right", width: "100%" }}
+                            className="btn btn-outline-success"
                           >
-                            <Button block color="ghost-success">
-                              Edit
-                            </Button>
-                          </Link>
-                        </Col>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Shahdrah-Muridke</td>
-
-                      <td>
-                      <Row>
-                          <Col col="3" md="12">
-                            <Button block color="ghost-success">
-                              Edit
-                            </Button>
-                          </Col>
-                        </Row>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Gulshan Ravi-Comsats</td>
-
-                      <td>
-                        <Row>
-                          <Col col="3" md="12">
-                            <Button block color="ghost-success">
-                              Edit
-                            </Button>
-                          </Col>
-                        </Row>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-                <nav>
-                  <Pagination>
-                    <PaginationItem>
-                      <PaginationLink previous tag="button">
-                        Prev
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem active>
-                      <PaginationLink tag="button">1</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink tag="button">2</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink tag="button">3</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink tag="button">4</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink next tag="button">
-                        Next
-                      </PaginationLink>
-                    </PaginationItem>
-                  </Pagination>
-                </nav>
-                <Col md="3">
-                  <Link to="/active-routes" style={{ textDecoration: "none" }}>
-                    <Button
-                      as={NavLink}
-                      to={"/add-paid-students"}
-                      block
-                      color="ghost-success"
-                    >
-                      Trips
-                    </Button>
-                  </Link>
-                </Col>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-    );
+                            View
+                          </button>
+                          Number of Stops
+                        </th>
+                        <th>Pick Up Time</th>
+                        <th>Drop of Time</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.props.Routes.data
+                        ? this.props.Routes.data.map((route) => (
+                            <tr key={route.id}>
+                              <td>{route.name}</td>
+                              <td>
+                                {route.countStops}
+                                <div>
+                                  <Collapse isOpen={this.state.isOpen}>
+                                
+                                 <Table dark hover bordered striped responsive size="sm">
+                                   <tr>
+                                     <th>Name</th>
+                                     <th>Latitude</th>
+                                     <th>Longitude</th>
+                                     <th>Time To Reach</th>
+                                   </tr>
+                                   <tbody>
+                                     {route.stopList.map((stop)=>(
+                                       <tr key={stop.id}>
+                                         <td>{stop.name}</td>
+                                         <td>{stop.latitude}</td>
+                                         <td>{stop.longitude}</td>
+                                         <td>{stop.timeToReach}</td>
+                                       </tr>
+                                     ))}
+                                   </tbody>
+                                 </Table>
+                                  </Collapse>
+                                </div>
+                              </td>
+                              <td>{route.pickUpTime}</td>
+                              <td>{route.dropOffTime}</td>
+                              <td>
+                              <Link
+                                  to={`/update-routes/${route.id}`}
+                                  style={{ textDecoration: "none" }}
+                                >
+                                  <Col col="3" md="12">
+                                    <button style={{
+                                      width:"100%"
+                                    }} className="btn btn-outline-success">
+                                      Edit
+                                    </button>
+                                  </Col>
+                                </Link>
+                              </td>
+                            </tr>
+                          ))
+                        : null}
+                    </tbody>
+                  </Table>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </div>
+      );
+    }
   }
 }
 
-export default ViewRoutes;
+function mapStateToProps(state) {
+  console.log("State of View Routes Component", state);
+  return {
+    Routes: state.Routes,
+  };
+}
+
+export default connect(mapStateToProps, { viewRoutes })(ViewRoutes);

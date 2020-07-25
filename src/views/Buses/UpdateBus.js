@@ -100,7 +100,7 @@ class UpdateBus extends Component {
   }
   onDelete() {
     console.log(this.props);
-    this.props.deleteBus(this.props.match.id, () => {
+    this.props.deleteBus(this.props.match.params.id, () => {
       this.props.history.push("/view-bus");
     });
   }
@@ -127,7 +127,7 @@ class UpdateBus extends Component {
             <Col xs="12" md="12">
               <Card>
                 <CardHeader>
-                  <strong>Add New Bus</strong>
+                  <strong>Update Bus</strong>
                 </CardHeader>
                 <CardBody>
                   <form className="form-horizontal">
@@ -226,9 +226,12 @@ function validate(Values) {
 }
 
 function mapStateToProps(state) {
+  console.log("State from update bus",state)
   if (state.Buses.clickedBus == undefined) {
+    console.log("Value is undefined")
     return { Buses: state.Buses };
   } else {
+    console.log("Value is defined")
     return {
       Buses: state.Buses,
       initialValues: {

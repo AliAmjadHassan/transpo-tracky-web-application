@@ -15,11 +15,12 @@ import * as actions from "../../actions/routesActions";
 import { connect } from "react-redux";
 
 Geocode.setApiKey("AIzaSyB_1B1lEbZV1lZDE5gL734kqm0BKq5f-Uo");
-let lat,lng=0
-let zoom = 15
-let height = 400
 class MyMapComponent extends Component {
   state = {
+    adress: "",
+    city: "",
+    area: "",
+    state: "",
     zoom: 15,
     height: 400,
     mapPosition: {
@@ -93,6 +94,10 @@ class MyMapComponent extends Component {
           area = this.getArea(addressArray),
           state = this.getState(addressArray);
         this.setState({
+          address: address ? address : "",
+          area: area ? area : "",
+          city: city ? city : "",
+          state: state ? state : "",
           markerPosition: {
             lat: newLat,
             lng: newLng,
@@ -104,7 +109,7 @@ class MyMapComponent extends Component {
         });
       },
       (error) => {
-        console.error(error);
+        // console.error(error);
       }
     );
   };
@@ -139,10 +144,8 @@ class MyMapComponent extends Component {
     });
   };
   componentDidUpdate() {
-    
-    let newArray =[this.state]
-    console.log("Sending to Map Function", newArray);
-    this.props.mapFunction(...newArray);
+    // console.log("asd", this);
+    this.props.mapFunction(this.state.mapPosition);
   }
   render() {
     const AsyncMap = withScriptjs(
@@ -205,18 +208,6 @@ class MyMapComponent extends Component {
         </GoogleMap>
       ))
     );
-    let City,Area,State,Address = ""
-    if(this.props.mapLocation==undefined){
-      City = ""
-     Area = ""
-       State = ""
-      Address = ""
-    }else{
-       City = this.props.mapLocation.city
-       Area = this.props.mapLocation.area
-       State = this.props.mapLocation.state
-       Address = this.props.mapLocation.address
-    }
     return (
       <div style={{ padding: "1rem", margin: "0 auto", maxWidth: 1000 }}>
         <h4
@@ -227,15 +218,14 @@ class MyMapComponent extends Component {
         >
           Select Location from Map
         </h4>
-        
         <Descriptions bordered={true}>
-          <Descriptions.Item label="City:">{City}</Descriptions.Item>
-          <Descriptions.Item label="Area:">{Area}</Descriptions.Item>
+          <Descriptions.Item label="City:">{this.state.city}</Descriptions.Item>
+          <Descriptions.Item label="Area:">{this.state.area}</Descriptions.Item>
           <Descriptions.Item label="State:">
-            {State}
+            {this.state.state}
           </Descriptions.Item>
           <Descriptions.Item label="Address">
-            {Area}
+            {this.state.address}
           </Descriptions.Item>
         </Descriptions>
         <AsyncMap
@@ -250,7 +240,7 @@ class MyMapComponent extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log("State of Map Component", state);
+  // console.log("State of Map Component", state);
   return state.Routes
 }
 export default connect(mapStateToProps, actions)(MyMapComponent);

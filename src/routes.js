@@ -58,7 +58,7 @@ const routes = [
   { path: '/view-routes', name: 'ViewRoutes', component: ViewRoutes},
   { path: '/bus-routes/map', name: 'map', component: MapComponent},
   { path: '/active-routes', name: 'ActiveRoutes', component: ActiveRoutes},
-  { path: '/edit-routes', name: 'ActiveRoutes', component: UpdateRoutes},
+  { path: '/update-routes/:id', name: 'ActiveRoutes', component: UpdateRoutes},
   { path: '/track-routes', name: 'ActiveRoutes', component: TrackRoutes},
   { path: '/add-bus', name: 'AddBus', component: AddBus},
   { path: '/update-bus/:id', name: 'UpdateBus', component: UpdateBus},

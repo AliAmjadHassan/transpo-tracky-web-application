@@ -10,10 +10,9 @@ export function busList() {
   };
 }
 
-
 export function addNewBus(values, cb) {
   // console.log("Values from AddBus",values)
-  const request = fetch(`${URL}/buses`, {
+  fetch(`${URL}/buses`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -28,7 +27,7 @@ export function addNewBus(values, cb) {
 
 export function updateBus(values, id, cb) {
   // console.log("Values from Index",values,id,"URL From index",`${URL}/buses/${id}`)
-  const request = fetch(`${URL}/buses/${id}`, {
+  fetch(`${URL}/buses/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

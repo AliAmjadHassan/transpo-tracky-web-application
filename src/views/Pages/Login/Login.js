@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import logo from "../Login/logo.png";
 import {
-  Alert,
   Button,
   Card,
   CardBody,
@@ -25,6 +23,8 @@ class Login extends Component {
     name = "";
     pass = "";
   }
+
+  
   state = {
     username: "admin",
     password: "admin",
@@ -45,7 +45,7 @@ class Login extends Component {
               <CardGroup>
                 <Card className="p-4">
                   <CardBody>
-                    <img height="100%" width="100%" src={logo} />
+                    <img height="40%" width="100%" src={logo} />
                     <Form>
                       <h1>Login</h1>
                       <p className="text-muted">Sign In to your account</p>

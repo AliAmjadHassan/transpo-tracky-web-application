@@ -1,12 +1,11 @@
-import React, { Component, useEffect } from "react";
-import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
+import React, { Component } from "react";
+import { Field, reduxForm, FieldArray } from "redux-form";
 import { connect } from "react-redux";
 import { getactivesession } from "../../actions/sessionActions";
 import LoadingScreen from "react-loading-screen";
 import logo from "../../assets/img/brand/logop.svg";
-import Iframe from "react-iframe";
 import MyMapComponent from "./MapComponent";
-import { MapLocationReturn } from "./MapComponent";
+import { addNewRoute } from "../../actions/routesActions";
 import {
   Button,
   Card,
@@ -23,230 +22,61 @@ import {
   ListGroupItem,
   Row,
 } from "reactstrap";
+let latarray = [];
+let lngarray = [];
 
-// class addNewRoutes extends Component {
-//   textInputHandler(field) {
-//     const className = `form-input ${
-//       field.meta.touched && field.meta.error ? "has-error" : ""
-//     }`;
+class AddRoute extends Component {
+  componentDidMount() {
+    console.log("Add Route Props", this.props);
+    this.props.getactivesession();
+  }
 
-//     return (
-//       <FormGroup row className={className}>
-//         <Col md="3">
-//           <Label>{field.myLabel}</Label>
-//         </Col>
-//         <Col xs="12" md="3">
-//           <Input required type="text" {...field.input} />
-//           <FormText color="muted">{field.helpingText}</FormText>
-//         </Col>
-//         <div style={{ color: "red" }} className="error danger">
-//           {field.meta.touched ? field.meta.error : ""}
-//         </div>
-//       </FormGroup>
-//     );
-//   }
+  renderField = ({
+    input,
+    label,
+    placeholder,
+    type,
+    className,
+    helpingText,
+    meta: { touched, error },
+  }) => (
+    <FormGroup row className={className}>
+      <Col md="3">
+        <Label>{label}</Label>
+      </Col>
+      <Col xs="12" md="3">
+        <Input {...input} type={type} placeholder={placeholder} />
+        <FormText color="muted">{helpingText}</FormText>
+        {touched && error && (
+          <span
+            style={{
+              color: "red",
+            }}
+          >
+            {error}
+          </span>
+        )}
+      </Col>
+    </FormGroup>
+  );
 
-//   timeInputHandler(field) {
-//     const className = `form-input ${
-//       field.meta.touched && field.meta.error ? "has-error" : ""
-//     }`;
+  renderStopField = ({
+    input,
+    label,
+    placeholder,
+    type,
+    className,
+    helpingText,
 
-//     return (
-//       <FormGroup row className={className}>
-//         <Col md="3">
-//           <Label>{field.myLabel}</Label>
-//         </Col>
-//         <Col xs="12" md="3">
-//           <Input required type="time" {...field.input} />
-//           <FormText color="muted">{field.helpingText}</FormText>
-//         </Col>
-//         <div style={{ color: "red" }} className="error">
-//           {field.meta.touched ? field.meta.error : ""}
-//         </div>
-//       </FormGroup>
-//     );
-//   }
-// dropDownHandler(field) {
-//   const className = `form-input ${
-//     field.meta.touched && field.meta.error ? "has-error" : ""
-//   }`;
+    meta: { touched, error },
+  }) => (
+    <FormGroup row className={className}>
+      <Col sm="6">
+        <Label>{label}</Label>
 
-//   return (
-//     <FormGroup row>
-//       <Col md="3">
-//         <Label htmlFor="select">{field.myLabel}</Label>
-//       </Col>
-//       <Col xs="12" md="3">
-//         <Input type="select" {...field.input}>
-//           <option value="notselected">{field.status3}</option>
-//           <option value={field.value1}>{field.status1}</option>
-//           <option value={field.value2}>{field.status2}</option>
-//         </Input>
-//       </Col>
-//       <div style={{ color: "red" }} className="error">
-//         {field.meta.touched ? field.meta.error : ""}
-//       </div>
-//     </FormGroup>
-//   );
-// }
-
-//   onSubmit(Values) {
-//     this.props.addNewBus(Values, () => {
-//       this.props.history.push("/view-bus");
-//     });
-//   }
-
-// componentDidMount() {
-//   this.props.getactivesession();
-// }
-
-//   render() {
-// if (this.props.activeSession == undefined) {
-//   return <div></div>;
-// } else {
-//   const sessionvalue = {
-//     session: {
-//       id: this.props.activeSession.id,
-//     },
-//   };
-//   console.log("Props of Add Route", this.props);
-//   console.log("Session Value", sessionvalue);
-//       return (
-//         <div className="animated fadeIn">
-//           <Row>
-//             <Col xs="12" md="12">
-//               <Card>
-//                 <CardHeader>
-//                   <strong>Add New Routes</strong>
-//                 </CardHeader>
-//                 <CardBody>
-//                   <Form
-//                     action=""
-//                     method="post"
-//                     encType="multipart/form-data"
-//                     className="form-horizontal"
-//                   >
-//                     <Field
-//                       myLabel="Route Name"
-//                       helpingText="e.g route No. 1"
-//                       name="name"
-//                       component={this.textInputHandler}
-//                     ></Field>
-// <Field
-//   name="liveStatus"
-//   myLabel="Live Status"
-//   status1="Not Live"
-//   value1="0"
-//   status2="Live"
-//   value2="1"
-//   status3="Please Select"
-//   component={this.dropDownHandler}
-// ></Field>
-// <Field
-//   name="session"
-//   myLabel="Session"
-//   status1="Current Session"
-//   value1={JSON.stringify(sessionvalue)}
-//   status2="Next Session"
-//   status3="Please Select"
-//   component={this.dropDownHandler}
-// ></Field>
-//                     <Field
-//                       name="pickUpTime"
-//                       myLabel="Pick Up Time"
-//                       component={this.timeInputHandler}
-//                     ></Field>
-//                     <Field
-//                       name="dropOffTime"
-//                       myLabel="Drop Off Time"
-//                       component={this.timeInputHandler}
-//                     ></Field>
-//                   </Form>
-//                 </CardBody>
-//                 <CardFooter>
-//                   <Button type="submit" size="sm" color="primary">
-//                     <i className="fa fa-dot-circle-o"></i> Submit
-//                   </Button>
-//                   <Button type="reset" size="sm" color="danger">
-//                     <i className="fa fa-ban"></i> Reset
-//                   </Button>
-//                 </CardFooter>
-//               </Card>
-//             </Col>
-//           </Row>
-//         </div>
-//       );
-//     }
-//   }
-// }
-
-// function validate(Values) {
-//   const errors = {};
-
-//   if (!Values.name) {
-//     errors.name = "Route Name is Required";
-//   }
-
-//   if (Values.liveStatus == "notselected" || !Values.liveStatus) {
-//     errors.liveStatus = "Please Select";
-//   }
-//   if (!Values.pickUpTime) {
-//     errors.pickUpTime = "Please Select";
-//   }
-//   if (!Values.dropOffTime) {
-//     errors.dropOffTime = "Please Select";
-//   }
-
-//   // if (!Values.model) {
-//   //   errors.model = "Enter Bus Model";
-//   // }
-
-//   // if (!Values.type) {
-//   //   errors.type = "Enter Bus Type";
-//   // }
-//   // if (!Values.capacity || Values.capacity < 0) {
-//   //   errors.capacity = "Enter a valid Number";
-//   // }
-
-//   console.log(Values);
-
-//   return errors;
-// }
-
-// function mapStateToProps(state) {
-//   // console.log("State", state);
-//   if (state.Sessions.activeSession == undefined) return {};
-//   else {
-//     return {
-//       activeSession: state.Sessions.activeSession.data,
-//     };
-//   }
-// }
-// export default reduxForm({
-//   validate,
-//   form: "add-new-route",
-// })(connect(mapStateToProps, { getactivesession })(addNewRoutes));
-let mapPosition = {
-  lat: 0,
-  lng: 0,
-};
-
-const renderField = ({
-  input,
-  label,
-  placeholder,
-  type,
-  className,
-  helpingText,
-  meta: { touched, error },
-}) => (
-  <FormGroup row className={className}>
-    <Col md="3">
-      <Label>{label}</Label>
-    </Col>
-    <Col xs="12" md="3">
-      <Input {...input} type={type} placeholder={placeholder} />
-      <FormText color="muted">{helpingText}</FormText>
+        <Input {...input} type={type} placeholder={placeholder} />
+        <FormText color="muted">{helpingText}</FormText>
+      </Col>
       {touched && error && (
         <span
           style={{
@@ -256,284 +86,323 @@ const renderField = ({
           {error}
         </span>
       )}
-    </Col>
-  </FormGroup>
-);
-const renderStopField = ({
-  input,
-  label,
-  placeholder,
-  type,
-  className,
-  helpingText,
-  value,
-  meta: { touched, error },
-}) => (
-  <FormGroup row className={className}>
-    <Col sm="6">
-      <Label>{label}</Label>
+    </FormGroup>
+  );
 
-      <Input {...input} type={type} placeholder={placeholder} />
-      <FormText color="muted">{helpingText}</FormText>
-    </Col>
-    {touched && error && (
-      <span
-        style={{
-          color: "red",
-        }}
-      >
-        {error}
-      </span>
-    )}
-  </FormGroup>
-);
+  renderStopLatLngField = ({
+    input,
+    label,
+    placeholder,
+    type,
+    className,
+    helpingText,
 
-const dropDownHandler = ({
-  label,
-  value1,
-  value2,
-  status1,
-  status2,
-  status3,
-  input,
-  type,
-  meta: { touched, error },
-}) => (
-  <FormGroup row>
-    <Col md="3">
-      <Label>{label}</Label>
-    </Col>
-    <Col xs="12" md="3">
-      <Input type={type} {...input}>
-        <option value="notselected">{status3}</option>
-        <option value={value1}>{status1}</option>
-        <option value={value2}>{status2}</option>
-      </Input>
-    </Col>
-  </FormGroup>
-);
+    meta: { touched, error },
+  }) => (
+    <FormGroup row className={className}>
+      <Col sm="6">
+        <Label>{label}</Label>
 
-const renderStops = ({
-  mapLat,
-  mapLng,
-  fields,
-  meta: { error, submitFailed },
-}) => (
-  <ListGroup>
-    <ListGroupItem>
-      <Button
-        size="sm"
-        color="success"
-        type="button"
-        style={{
-          display: "inline-block",
-          float: "right",
-        }}
-        onClick={() => fields.push({})}
-      >
-        Add Stops
-      </Button>
-      {submitFailed && error && <span>{error}</span>}
-    </ListGroupItem>
-    {fields.map((stop, index) => (
-      <ListGroupItem key={index}>
-        <h4
+        <Input {...input} disabled type={type} placeholder={placeholder} />
+        <FormText color="muted">{helpingText}</FormText>
+      </Col>
+      {touched && error && (
+        <span
           style={{
-            marginBottom: "20px",
             color: "red",
           }}
         >
-          Stop No.{index + 1}
-        </h4>
-        <Row>
-          <Col sx="6" md="6" sm="12">
-            <Field
-              name={`${stop}.name`}
-              type="text"
-              component={renderStopField}
-              label="Name"
-            />
-          </Col>
-          <Col sx="6" md="6" sm="12">
-            <Field
-              name={`${stop}.timeToReach`}
-              type="time"
-              component={renderStopField}
-              label="Time To Reach"
-            />
-          </Col>
-          <Col sx="6" md="6" sm="12">
-            <Field
-              name={`${stop}.latitude`}
-              type="text"
-              component={renderStopField}
-              label="Lattitude"
-              placeholder={mapLat}
-            />
-          </Col>
-          <Col sx="6" md="6" sm="12">
-            <Field
-              name={`${stop}.longitude`}
-              type="text"
-              component={renderStopField}
-              label="Longitude"
-              placeholder={mapLng}
-            />
-          </Col>
-          <Col sm="12">
-            <MyMapComponent />
-          </Col>
-        </Row>
+          {error}
+        </span>
+      )}
+    </FormGroup>
+  );
 
-        <Button
-          type="button"
-          title="Remove Stop"
-          size="sm"
-          color="danger"
-          style={{
-            float: "right",
-            marginTop: "20px",
-          }}
-          onClick={() => fields.remove(index)}
-        >
-          Delete
-        </Button>
-      </ListGroupItem>
-    ))}
-  </ListGroup>
-);
+  dropDownHandler = ({
+    label,
+    value1,
+    value2,
+    status1,
+    status2,
+    status3,
+    input,
+    type,
+    meta: { touched, error },
+  }) => (
+    <FormGroup row>
+      <Col md="3">
+        <Label>{label}</Label>
+      </Col>
+      <Col xs="12" md="3">
+        <Input type={type} {...input}>
+          <option value="notselected">{status3}</option>
+          <option value={value1}>{status1}</option>
+          <option value={value2}>{status2}</option>
+        </Input>
+      </Col>
+    </FormGroup>
+  );
 
-const AddNewRoutes = (props) => {
-  const { handleSubmit, pristine, reset, submitting } = props;
-  useEffect(() => {
-    console.log("Add Route Props", props);
-
-    props.getactivesession();
-  }, []);
-  if (props.activeSession == undefined) {
-    return (
-      <LoadingScreen
-        loading={true}
-        bgColor="#659759"
-        spinnerColor="#344a32"
-        textColor="##e9d9a8"
-        logoSrc={logo}
-        text="A conveyance with convenience"
-      >
-        <div>Loading...</div>
-      </LoadingScreen>
-    );
-  } else {
-    const sessionvalue = {
-      session: {
-        id: props.activeSession.id,
-      },
-    };
-
-    console.log("Session Value", sessionvalue.session);
-    console.log("Sessio", props);
-    let lat = 0;
-    let lng = 0;
-    if (props.mapLocation == undefined) {
-      lat = 0;
-      lng = 0;
-    } else {
-      lat = props.mapLocation.mapPosition.lat;
-      lng = props.mapLocation.mapPosition.lng;
-      console.log("Lat",lat,"Lng",lng)
-    }
-   
-
-    return (
-      <div className="animated fadeIn">
-        <Row>
-          <Col xs="12" md="12">
-            <Card>
-              <CardHeader>
-                <strong>Add New Routes</strong>
-              </CardHeader>
-              <CardBody>
-                <Form onSubmit={handleSubmit}>
-                  <Field
-                    name="name"
-                    type="text"
-                    component={renderField}
-                    label="Route Name"
-                    placeholder="Enter Route Name"
-                    helpingText="e.g. Route # 10"
-                  />
-                  <Field
-                    name="pickUpTime"
-                    type="time"
-                    component={renderField}
-                    label="Pick Up Time"
-                    helpingText="Select Pick Up Time"
-                  />
-                  <Field
-                    name="dropOffTime"
-                    type="time"
-                    component={renderField}
-                    label="Drop Off Time"
-                    helpingText="Select Drop Off Time"
-                  />
-                  <Field
-                    name="liveStatus"
-                    label="Live Status"
-                    status1="Not Live"
-                    value1="0"
-                    status2="Live"
-                    value2="1"
-                    status3="Please Select"
-                    component={dropDownHandler}
-                    type="select"
-                  />
-                  <Field
-                    name="session"
-                    label="Session"
-                    status1="Current Session"
-                    value1={JSON.stringify(sessionvalue.session)}
-                    status2="Next Session"
-                    status3="Please Select"
-                    component={dropDownHandler}
-                    type="select"
-                  ></Field>
-                  <FieldArray
-                    mapLat={lat}
-                    mapLng={lng}
-                    name="stopList"
-                    component={renderStops}
-                  />
-                  <CardFooter>
-                    <Button
-                      type="submit"
-                      size="md"
-                      color="primary"
-                      disabled={submitting}
-                    >
-                      Submit
-                    </Button>
-                    <Button
-                      type="button"
-                      size="md"
-                      color="danger"
-                      style={{
-                        marginLeft: "20px",
-                      }}
-                      disabled={pristine || submitting}
-                      onClick={reset}
-                    >
-                      Clear Values
-                    </Button>
-                  </CardFooter>
-                </Form>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-    );
+  latlnghandler(lat, lng, index) {
+    this.props.latarray[index] = lat;
+    this.props.lngarray[index] = lng;
+    console.log("LatArray", latarray);
   }
-};
+
+  renderStops = ({
+    required,
+
+    mapLat,
+    mapLng,
+    fields,
+    meta: { error, submitFailed },
+  }) => (
+    <ListGroup>
+      <ListGroupItem>
+        <Button
+          size="sm"
+          color="success"
+          type="button"
+          style={{
+            display: "inline-block",
+            float: "right",
+          }}
+          onClick={() => fields.push({})}
+        >
+          Add Stops
+        </Button>
+        {submitFailed && error && <span>{error}</span>}
+      </ListGroupItem>
+
+      {fields.map((stop, index) => (
+        <ListGroupItem key={index}>
+          <h4
+            style={{
+              marginBottom: "20px",
+              color: "red",
+            }}
+          >
+            Stop No.{index + 1}
+          </h4>
+          <Row>
+            <Col sx="6" md="6" sm="12">
+              <Field
+                name={`${stop}.name`}
+                type="text"
+                component={this.renderStopField}
+                label="Name"
+                // validate={required}
+              />
+            </Col>
+            <Col sx="6" md="6" sm="12">
+              <Field
+                name={`${stop}.timeToReach`}
+                type="time"
+                component={this.renderStopField}
+                label="Time To Reach"
+                // validate={required}
+              />
+            </Col>
+            <Col sx="6" md="6" sm="12">
+              <Field
+                name={`${stop}.latitude`}
+                type="text"
+                component={this.renderStopLatLngField}
+                label="Lattitude"
+                // validate={required}
+                value={this.props.change(
+                  `${stop}.latitude`,
+                  this.props.latarray[index]
+                )}
+              />
+            </Col>
+            <Col sx="6" md="6" sm="12">
+              <Field
+                name={`${stop}.longitude`}
+                type="text"
+                component={this.renderStopLatLngField}
+                label="Longitude"
+                // validate={required}
+                value={this.props.change(
+                  `${stop}.longitude`,
+                  this.props.lngarray[index]
+                )}
+              />
+            </Col>
+            <Col sm="12">
+              <MyMapComponent />
+            </Col>
+          </Row>
+
+          <Button
+            type="button"
+            title="Remove Stop"
+            size="sm"
+            color="danger"
+            style={{
+              float: "right",
+              marginTop: "50px",
+              marginLeft: "20px",
+            }}
+            onClick={() => fields.remove(index)}
+          >
+            Delete
+          </Button>
+          <Button
+            title="Finalize Stop"
+            size="sm"
+            color="success"
+            style={{
+              float: "right",
+              marginTop: "50px",
+            }}
+            onClick={() => this.latlnghandler(mapLat, mapLng, index)}
+          >
+            Done
+          </Button>
+        </ListGroupItem>
+      ))}
+    </ListGroup>
+  );
+  onSubmit(Values) {
+    this.props.addNewRoute(Values,() => {
+      this.props.history.push("/view-routes");
+    });
+  }
+
+  render() {
+    console.log("Props from add route", this.props);
+    // const { pristine, reset, submitting } = this.props;
+    if (this.props.activeSession === undefined) {
+      return (
+        <LoadingScreen
+          loading={true}
+          bgColor="#659759"
+          spinnerColor="#344a32"
+          textColor="##e9d9a8"
+          logoSrc={logo}
+          text="A conveyance with convenience"
+        >
+          <div>Loading...</div>
+        </LoadingScreen>
+      );
+    } else {
+      const sessionvalue = {
+        session: {
+          id: this.props.activeSession.id,
+        },
+      };
+
+      let lat = 0;
+      let lng = 0;
+
+      if (this.props.mapLocation === undefined) {
+        lat = 0;
+        lng = 0;
+      } else {
+        lat = this.props.mapLocation.lat;
+        lng = this.props.mapLocation.lng;
+      }
+      // const required = (value) =>
+      //   value ? undefined : `This field is Required`;
+      console.log(sessionvalue);
+      return (
+        <div className="animated fadeIn">
+          <Row>
+            <Col xs="12" md="12">
+              <Card>
+                <CardHeader>
+                  <strong>Add New Routes</strong>
+                </CardHeader>
+                <CardBody>
+                  <Form onSubmit={this.handleSubmit}>
+                    <Field
+                      name="name"
+                      type="text"
+                      component={this.renderField}
+                      label="Route Name"
+                      placeholder="Enter Route Name"
+                      helpingText="e.g. Route # 10"
+                    />
+                    <Field
+                      name="pickUpTime"
+                      type="time"
+                      component={this.renderField}
+                      label="Pick Up Time"
+                      helpingText="Select Pick Up Time"
+                    />
+                    <Field
+                      name="dropOffTime"
+                      type="time"
+                      component={this.renderField}
+                      label="Drop Off Time"
+                      helpingText="Select Drop Off Time"
+                    />
+                    <Field
+                      name="liveStatus"
+                      label="Live Status"
+                      status1="Not Live"
+                      value1="0"
+                      status2="Live"
+                      value2="1"
+                      status3="Please Select"
+                      component={this.dropDownHandler}
+                      type="select"
+                    />
+                    <Field
+                      name="session"
+                      label="Session"
+                      status1="Current Session"
+                      value1={JSON.stringify(sessionvalue.session)}
+                      status2="Next Session"
+                      status3="Please Select"
+                      component={this.dropDownHandler}
+                      type="select"
+                    ></Field>
+                    <FieldArray
+                      mapLat={lat}
+                      mapLng={lng}
+                      latarray={latarray}
+                      lngarray={lngarray}
+                      name="stopList"
+                      // required={required}
+                      component={this.renderStops}
+                    />
+                    <CardFooter>
+                      <Button
+                        onClick={this.props.handleSubmit((event) =>
+                          this.onSubmit(event)
+                        )}
+                        type="submit"
+                        size="md"
+                        color="primary"
+                      >
+                        Submit
+                      </Button>
+                      <Button
+                        type="button"
+                        size="md"
+                        color="danger"
+                        style={{
+                          marginLeft: "20px",
+                        }}
+                        // disabled={pristine || submitting}
+                        // onClick={reset}
+                      >
+                        Clear Values
+                      </Button>
+                    </CardFooter>
+                  </Form>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </div>
+      );
+    }
+  }
+}
+
 function validate(Values) {
   const errors = {};
 
@@ -541,7 +410,7 @@ function validate(Values) {
     errors.name = "Route Name is Required";
   }
 
-  if (Values.liveStatus == "notselected" || !Values.liveStatus) {
+  if (Values.liveStatus === "notselected" || !Values.liveStatus) {
     errors.liveStatus = "Please Select";
   }
   if (!Values.pickUpTime) {
@@ -550,33 +419,24 @@ function validate(Values) {
   if (!Values.dropOffTime) {
     errors.dropOffTime = "Please Select";
   }
-
-  // if (!Values.model) {
-  //   errors.model = "Enter Bus Model";
-  // }
-
-  // if (!Values.type) {
-  //   errors.type = "Enter Bus Type";
-  // }
-  // if (!Values.capacity || Values.capacity < 0) {
-  //   errors.capacity = "Enter a valid Number";
-  // }
-
-  // console.log(Values);
+  console.log(Values);
 
   return errors;
 }
+
 function mapStateToProps(state) {
-  console.log("state of add route", state);
-  if (state.Sessions.activeSession == undefined) return {};
+  // console.log("state of add route", state);
+  if (state.Sessions.activeSession === undefined) return {};
   else {
     return {
       activeSession: state.Sessions.activeSession.data,
       mapLocation: state.Routes.mapLocation,
+      latarray: latarray,
+      lngarray: lngarray,
     };
   }
 }
 export default reduxForm({
   validate,
   form: "add-new-route",
-})(connect(mapStateToProps, { getactivesession })(AddNewRoutes));
+})(connect(mapStateToProps, { getactivesession, addNewRoute })(AddRoute));
