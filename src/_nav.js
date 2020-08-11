@@ -180,8 +180,8 @@ export default {
     },
 
     {
-      name: "Previous Trips",
-      url: "/",
+      name: "Trips",
+      url: "/trips",
       icon: "icon-pie-chart",
     },
     // {

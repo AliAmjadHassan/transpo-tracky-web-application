@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import logo from "../Login/logo.png";
+import { getAdminToken } from "../../../actions/authorizationAction";
 import {
   Button,
   Card,
@@ -13,6 +14,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
+  Alert,
   Row,
 } from "reactstrap";
 
@@ -24,16 +26,19 @@ class Login extends Component {
     pass = "";
   }
 
-  
   state = {
-    username: "admin",
-    password: "admin",
+    token: "",
   };
 
   loginhandler() {
-    if (this.state.username === name && this.state.password === pass) {
-      this.props.history.push("/dashboard");
-    } else alert("User Id or Password is inCorrect")
+    getAdminToken(name, pass).then((response) => {
+      console.log(response);
+      if (response.payload.data.token == "") {
+        alert(response.payload.data.message);
+      } else {
+        this.props.history.push("/dashboard");
+      }
+    });
   }
   render() {
     console.log(this.props);
@@ -92,11 +97,11 @@ class Login extends Component {
                           </Button>
                           {/* </Link> */}
                         </Col>
-                        <Col xs="6" className="text-right">
+                        {/* <Col xs="6" className="text-right">
                           <Button color="link" className="px-0">
                             Forgot password?
                           </Button>
-                        </Col>
+                        </Col> */}
                       </Row>
                     </Form>
                   </CardBody>

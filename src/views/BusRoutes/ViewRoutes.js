@@ -56,7 +56,7 @@ class ViewRoutes extends Component {
                   <i className=""></i> <strong>Routes</strong>
                 </CardHeader>
                 <CardBody>
-                  <Table  bordered striped responsive size="lg">
+                  <Table bordered striped responsive size="lg">
                     <thead>
                       <tr>
                         <th>Route Name</th>
@@ -84,23 +84,23 @@ class ViewRoutes extends Component {
                             <tr key={route.id}>
                               <td>{route.name}</td>
                               <td>
-                                {route.countStops}
+                                {route.stopList.length}
                                 <div>
                                   <Collapse isOpen={this.state.isOpen}>
                                 
-                                 <Table dark hover bordered striped responsive size="sm">
+                                 <Table className='table-update' hover bordered striped responsive size="sm">
                                    <tr>
                                      <th>Name</th>
-                                     <th>Latitude</th>
-                                     <th>Longitude</th>
+                                     {/* <th>Latitude</th>
+                                     <th>Longitude</th> */}
                                      <th>Time To Reach</th>
                                    </tr>
                                    <tbody>
                                      {route.stopList.map((stop)=>(
                                        <tr key={stop.id}>
                                          <td>{stop.name}</td>
-                                         <td>{stop.latitude}</td>
-                                         <td>{stop.longitude}</td>
+                                         {/* <td>{stop.latitude}</td>
+                                         <td>{stop.longitude}</td> */}
                                          <td>{stop.timeToReach}</td>
                                        </tr>
                                      ))}
