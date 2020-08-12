@@ -24,6 +24,7 @@ const ButtonGroups = React.lazy(() => import('./views/Buttons/ButtonGroups'));
 const Buttons = React.lazy(() => import('./views/Buttons/Buttons'));
 const Charts = React.lazy(() => import('./views/Charts'));
 const Dashboard = React.lazy(() => import('./views/Dashboard'));
+const Website = React.lazy(() => import('../src/WebsiteDisplay/Website'));
 const addNewRoutes = React.lazy(()=> import('./views/BusRoutes/addNewRoutes'));
 const MapComponent = React.lazy(()=> import('./views/BusRoutes/MapComponent'));
 const AddBus = React.lazy(()=> import('./views/Buses/AddBus'));
@@ -35,6 +36,7 @@ const TrackRoutes = React.lazy(()=> import('./views/BusRoutes/TrackRoutes'));
 const UpdateRoutes = React.lazy(()=> import('./views/BusRoutes/UpdateRoute'));
 const AddDriver = React.lazy(()=> import('./views/Drivers/AddDriver'));
 const VieDriver = React.lazy(()=> import('./views/Drivers/ViewDriver'));
+const UpdateDriver = React.lazy(()=> import('./views/Drivers/UpdateDriver'));
 const AddFeePayingStudents = React.lazy(()=> import('./views/FeePayingStudents/AddFeePayingStudent'));
 const ViewFeePayingStudents = React.lazy(()=> import('./views/FeePayingStudents/ViewFeePayingStudent'));
 const CoreUIIcons = React.lazy(() => import('./views/Icons/CoreUIIcons'));
@@ -55,6 +57,7 @@ const Trips = React.lazy(() => import('./views/Trips/Trips'));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/website', name: 'Website', component: Website },
   { path: '/bus-routes', name: 'addNewRoutes', component: addNewRoutes},
   { path: '/view-routes', name: 'ViewRoutes', component: ViewRoutes},
   { path: '/bus-routes/map', name: 'map', component: MapComponent},
@@ -66,6 +69,7 @@ const routes = [
   { path: '/view-bus', name: 'ViewBus', component: ViewBus},
   { path: '/add-driver', name: 'AddDriver', component: AddDriver},
   { path: '/view-driver', name: 'ViewDriver', component: VieDriver},
+  { path: '/update-driver/:id', name: 'UpdateDriver', component: UpdateDriver},
   { path: '/add-paid-students', name: 'AddFeePayingStudents', component: AddFeePayingStudents},
   { path: '/view-paid-students', name: 'ViewFeePayingStudents', component: ViewFeePayingStudents},
   { path: '/trips', name: 'Trips', component: Trips},

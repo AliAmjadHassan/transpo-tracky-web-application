@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = `http://localHost:4000`;
+const URL = `http://165.232.36.159:3000`;
 
 export function mapFunction(values) {
   let newArray = Object.values(values);

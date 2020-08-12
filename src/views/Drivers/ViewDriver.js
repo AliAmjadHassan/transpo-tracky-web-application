@@ -77,7 +77,7 @@ class ViewEmployees extends Component {
                               <td>{employee.Personal_details.contact}</td>
                               <td>
                                 <Link
-                                  // to={`/update-bus/${bus.id}`}
+                                  to={`/update-driver/${employee.id.employeeId}`}
                                   style={{ textDecoration: "none" }}
                                 >
                                   <Col col="3" md="12">

@@ -1,4 +1,4 @@
-const URL = `http://localHost:4000`;
+const URL = `http://165.232.36.159:3000`;
 
 export function busList() {
   const request = fetch(`${URL}/buses`, { method: "GET" }).then((response) =>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AsyncStorage } from "AsyncStorage";
-const URL = `http://localHost:4000/employee/login`;
+const URL = `http://165.232.36.159:3000/employee/login`;
 
 export async function getAdminToken(username, password) {
   var body = {

@@ -1,0 +1,30 @@
+#showcase {
+  background: #333 url("./Capture.PNG") no-repeat center center/cover;
+  height: 98vh;
+  color: #fff;
+  background-attachment: fixed;
+}
+
+.text-primary {
+  color: #659759 !important;
+}
+
+#showcase .showcase-content {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 2rem;
+  /* Overlay */
+  position: absolute;
+  top: 65px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+#readmore:hover {
+  background-color: #659759;
+}

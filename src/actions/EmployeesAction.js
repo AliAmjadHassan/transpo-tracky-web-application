@@ -1,4 +1,4 @@
-const URL = `http://localHost:4000`;
+const URL = `http://165.232.36.159:3000`;
 
 export function getAllEmployees(token) {
   console.log("Bearer" + token);
@@ -56,12 +56,15 @@ export function updateBus(values, id, cb) {
 //   };
 // }
 
-export function clickedBusFunction(id) {
-  const request = fetch(`${URL}/buses/${id}`, {
+export function getSpecificEmployee(id, token) {
+  const request = fetch(`${URL}/employee/fetch-specific-employee/${id}`, {
     method: "GET",
+    headers: {
+      authorization: "Bearer " + token,
+    },
   }).then((response) => response.json());
   return {
-    type: "CLICKED_BUS",
+    type: "SPECIFIC_EMPLOYEE",
     payload: request,
   };
 }

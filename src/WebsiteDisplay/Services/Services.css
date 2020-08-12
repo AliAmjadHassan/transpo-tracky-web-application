@@ -1,0 +1,16 @@
+
+#clients .items {
+  display: flex;
+}
+
+
+.service{
+  padding-top: 50px;
+  
+}
+
+#clients .items img {
+  display: block;
+  margin: auto;
+  width: 60%;
+}
