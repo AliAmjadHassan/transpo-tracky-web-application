@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import logo from "../Login/logo.png";
-import { getAdminToken } from "../../../actions/authorizationAction";
+import {
+  getAdminToken,
+  storeAdminToken,
+} from "../../../actions/authorizationAction";
+
 import {
   Button,
   Card,
@@ -36,10 +40,12 @@ class Login extends Component {
       if (response.payload.data.token == "") {
         alert(response.payload.data.message);
       } else {
+        storeAdminToken(response.payload.data.token);
         this.props.history.push("/dashboard");
       }
     });
   }
+
   render() {
     console.log(this.props);
     return (
@@ -95,6 +101,7 @@ class Login extends Component {
                           >
                             Login
                           </Button>
+
                           {/* </Link> */}
                         </Col>
                         {/* <Col xs="6" className="text-right">

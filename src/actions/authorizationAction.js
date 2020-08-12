@@ -1,4 +1,5 @@
 import axios from "axios";
+import { AsyncStorage } from "AsyncStorage";
 const URL = `http://localHost:4000/employee/login`;
 
 export async function getAdminToken(username, password) {
@@ -20,5 +21,24 @@ export async function getAdminToken(username, password) {
     };
   } catch (err) {
     console.log("AXIOS ERROR: ", err);
+  }
+}
+
+export async function storeAdminToken(token) {
+  try {
+    await AsyncStorage.setItem("token", token);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getAdminTokenfromStorage() {
+  try {
+    const value = await AsyncStorage.getItem("token");
+    if (value !== null) {
+      return value
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
