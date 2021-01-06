@@ -23,7 +23,7 @@
     "@types/google-maps": "^3.2.2",
     "AsyncStorage": "^0.1.5",
     "antd": "^4.4.2",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.8.0",
     "classnames": "^2.2.6",
